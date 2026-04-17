@@ -12,23 +12,31 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:clickable="true"
-        android:focusable="true"
+        android:layout_marginTop="172dp"
         android:text="@string/store_title"
         android:textSize="32sp"
         android:textStyle="bold" />
 
     <LinearLayout
-        android:id="@+id/loaderContainer"
-        android:layout_width="wrap_content"
+        android:id="@+id/contenedorBotones"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/tvTitulo"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="124dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:gravity="center"
-        android:orientation="horizontal" />
+        android:layout_marginTop="128dp"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/btnProductos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Productos" />
+
+        <Button
+            android:id="@+id/btnVentas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Ventas" />
+    </LinearLayout>
 
 </RelativeLayout>
