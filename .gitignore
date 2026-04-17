@@ -1,0 +1,36 @@
+*.iml
+.gradle
+/local.properties
+/.idea/caches
+/.idea/libraries
+/.idea/modules.xml
+/.idea/workspace.xml
+/.idea/navEditor.xml
+/.idea/assetWizardSettings.xml
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
+local.properties
+
+# Entornos de desarrollo local
+local.properties
+
+# Archivos de Gradle
+.gradle/
+build/
+*/build/
+
+# Archivos de IntelliJ IDEA / Android Studio / VS Code
+.idea/
+.vscode/
+*.iml
+*.iws
+
+# Archivos del sistema operativo (Mac/Windows)
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
