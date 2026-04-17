@@ -1,1 +1,25 @@
-/build
+# Entornos de desarrollo local
+local.properties
+
+# Archivos de Gradle y compilación
+.gradle/
+build/
+*/build/
+.externalNativeBuild
+.cxx
+
+# Archivos de IntelliJ IDEA / Android Studio / VS Code
+.idea/
+.vscode/
+*.iml
+*.iws
+
+# Archivos específicos de Android Studio
+/captures
+
+# Archivos del sistema operativo (Mac/Windows)
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
