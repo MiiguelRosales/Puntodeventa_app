@@ -1,9 +1,218 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mainProductos"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PantallaProductos">
+    tools:context=".PantallaProductos"
+    android:layout_margin="10dp">
+
+    <TextView
+        android:id="@+id/ProdTitulo"
+        android:text="@string/productos_titulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:clickable="true"
+        android:focusable="true"
+        />
+
+    <TextView
+        android:id="@+id/txtcodigo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ProdTitulo"
+        android:text="@string/productos_codigo"
+        android:textSize="28sp"
+        android:gravity="center"
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_marginTop="24dp"
+        />
+
+    <EditText
+        android:id="@+id/inputcodigo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/txtcodigo"
+        android:layout_toRightOf="@+id/txtcodigo"
+        android:layout_marginLeft="16dp"
+        android:hint="@string/productos_hint_codigo"
+        android:inputType="number"
+        android:clickable="true"
+        android:focusable="true"
+        android:textSize="18sp"
+        />
+
+    <TextView
+        android:id="@+id/txtnombre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/inputcodigo"
+        android:text="@string/productos_nombre"
+        android:textSize="28sp"
+        android:gravity="center"
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_marginTop="24dp"
+        />
+
+    <EditText
+        android:id="@+id/inputnombre"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/txtnombre"
+        android:layout_toRightOf="@+id/txtnombre"
+        android:layout_marginLeft="16dp"
+        android:hint="@string/productos_hint_nombre"
+        android:inputType="text"
+        android:clickable="true"
+        android:focusable="true"
+        android:textSize="18sp"
+        />
+
+    <TextView
+        android:id="@+id/txtdescripcion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/inputnombre"
+        android:text="@string/productos_descripcion"
+        android:textSize="28sp"
+        android:gravity="center"
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_marginTop="24dp"
+        />
+
+    <EditText
+        android:id="@+id/inputdescripcion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/txtdescripcion"
+        android:layout_toRightOf="@+id/txtdescripcion"
+        android:layout_marginLeft="16dp"
+        android:hint="@string/productos_hint_descripcion"
+        android:inputType="text"
+        android:clickable="true"
+        android:focusable="true"
+        android:textSize="18sp"
+        />
+
+    <TextView
+        android:id="@+id/txtexistencia"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/inputdescripcion"
+        android:text="@string/productos_existencia"
+        android:textSize="28sp"
+        android:gravity="center"
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_marginTop="24dp"
+        />
+
+    <EditText
+        android:id="@+id/inputexistencia"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/txtexistencia"
+        android:layout_toRightOf="@+id/txtexistencia"
+        android:layout_marginLeft="16dp"
+        android:hint="@string/productos_hint_existencia"
+        android:inputType="number"
+        android:clickable="true"
+        android:focusable="true"
+        android:textSize="18sp"
+        />
+
+    <TextView
+        android:id="@+id/txtprecio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/inputexistencia"
+        android:text="@string/productos_precio"
+        android:textSize="28sp"
+        android:gravity="center"
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_marginTop="24dp"
+        />
+
+    <EditText
+        android:id="@+id/inputprecio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/txtprecio"
+        android:layout_toRightOf="@+id/txtprecio"
+        android:layout_marginLeft="16dp"
+        android:hint="@string/productos_hint_precio"
+        android:inputType="number"
+        android:clickable="true"
+        android:focusable="true"
+        android:textSize="18sp"
+        />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/contenedorBotones"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/inputprecio"
+        android:layout_marginTop="24dp">
+
+        <Button
+            android:id="@+id/btnGuardar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/productos_btn_guardar" />
+
+        <Button
+            android:id="@+id/btnConsultar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/productos_btn_consultar" />
+
+        <Button
+            android:id="@+id/btnEliminar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/productos_btn_eliminar" />
+
+        <Button
+            android:id="@+id/btnModificar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/productos_btn_modificar" />
+
+        <androidx.constraintlayout.helper.widget.Flow
+            android:id="@+id/flowBotones"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids="btnGuardar,btnConsultar,btnEliminar,btnModificar"
+            app:flow_horizontalGap="12dp"
+            app:flow_verticalGap="12dp"
+            app:flow_horizontalAlign="center"
+            app:flow_wrapMode="chain"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/txtmensaje"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/productos_mensaje"
+        android:textSize="18sp"
+        android:gravity="center"
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="24dp"
+        />
 
 </RelativeLayout>

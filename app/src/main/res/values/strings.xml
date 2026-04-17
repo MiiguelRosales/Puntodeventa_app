@@ -2,4 +2,20 @@
     <string name="app_name">Punto de venta</string>
     <string name="store_title">Abarrotes El Baraton</string>
     <string name="tap_to_start">Pulsa para comenzar</string>
+    <string name="productos_titulo">Productos</string>
+    <string name="productos_codigo">Codigo:</string>
+    <string name="productos_hint_codigo">Ingresa codigo...</string>
+    <string name="productos_nombre">Nombre:</string>
+    <string name="productos_hint_nombre">Ingresa nombre...</string>
+    <string name="productos_descripcion">Descripcion:</string>
+    <string name="productos_hint_descripcion">Ingresa descripcion...</string>
+    <string name="productos_existencia">Existencia:</string>
+    <string name="productos_hint_existencia">Ingresa existencia...</string>
+    <string name="productos_precio">Precio:</string>
+    <string name="productos_hint_precio">Ingresa precio...</string>
+    <string name="productos_btn_guardar">Guardar</string>
+    <string name="productos_btn_consultar">Consultar</string>
+    <string name="productos_btn_eliminar">Eliminar</string>
+    <string name="productos_btn_modificar">Modificar</string>
+    <string name="productos_mensaje">Aqui puedes guardar, consultar, modificar y eliminar productos</string>
 </resources>
