@@ -52,7 +52,7 @@
             android:background="@drawable/bg_button_new"
             android:text="@string/productos_titulo"
             android:textAllCaps="false"
-            android:textColor="#FFFFFF"
+            android:textColor="@color/button_text"
             android:textSize="17sp"
             android:textStyle="bold" />
 
@@ -64,7 +64,19 @@
             android:background="@drawable/bg_button_new"
             android:text="Ventas"
             android:textAllCaps="false"
-            android:textColor="#FFFFFF"
+            android:textColor="@color/button_text"
+            android:textSize="17sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btnTema"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="14dp"
+            android:background="@drawable/bg_button_new"
+            android:text="@string/tema_oscuro"
+            android:textAllCaps="false"
+            android:textColor="@color/button_text"
             android:textSize="17sp"
             android:textStyle="bold" />
 
@@ -121,7 +133,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="2dp"
                     android:layout_gravity="bottom"
-                    android:background="#232A32" />
+                    android:background="@color/road_line" />
 
                 <View
                     android:id="@+id/roadDash1"
@@ -130,7 +142,7 @@
                     android:layout_gravity="bottom|end"
                     android:layout_marginBottom="0dp"
                     android:layout_marginEnd="14dp"
-                    android:background="#FFFFFF" />
+                    android:background="@color/road_dash" />
 
                 <View
                     android:id="@+id/roadDash2"
@@ -139,7 +151,7 @@
                     android:layout_gravity="bottom|end"
                     android:layout_marginBottom="0dp"
                     android:layout_marginEnd="2dp"
-                    android:background="#FFFFFF" />
+                    android:background="@color/road_dash" />
 
             </FrameLayout>
         </LinearLayout>

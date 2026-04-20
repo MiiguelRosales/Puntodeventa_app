@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -29,9 +30,15 @@ public class PantallaInicial extends AppCompatActivity {
 
         Button btnProductos = findViewById(R.id.btnProductos);
         Button btnVentas = findViewById(R.id.btnVentas);
+        Button btnTema = findViewById(R.id.btnTema);
 
         btnProductos.setOnClickListener(v -> abrirPantallaProductos());
         btnVentas.setOnClickListener(v -> abrirPantallaVentas());
+        btnTema.setOnClickListener(v -> {
+            ThemeManager.toggleTheme(this);
+            recreate();
+        });
+        btnTema.setText(ThemeManager.getToggleLabel(this));
 
         iniciarAnimacionTitulo();
         iniciarAnimacionLoader();
@@ -75,7 +82,7 @@ public class PantallaInicial extends AppCompatActivity {
             } else {
                 TextView tv = new TextView(this);
                 tv.setText(String.valueOf(letra));
-                tv.setTextColor(0xFFFFFFFF);
+                tv.setTextColor(ContextCompat.getColor(this, R.color.text_primary));
                 tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 32);
                 tv.setTypeface(tv.getTypeface(), android.graphics.Typeface.BOLD);
                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(

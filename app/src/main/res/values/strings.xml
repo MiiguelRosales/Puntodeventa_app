@@ -17,4 +17,7 @@
     <string name="productos_btn_eliminar">Eliminar</string>
     <string name="productos_btn_modificar">Modificar</string>
     <string name="productos_mensaje">Aqui puedes guardar, consultar, modificar y eliminar productos</string>
+    <string name="tema_titulo">Tema</string>
+    <string name="tema_claro">Modo claro</string>
+    <string name="tema_oscuro">Modo oscuro</string>
 </resources>

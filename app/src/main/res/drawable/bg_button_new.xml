@@ -4,12 +4,12 @@
         <shape android:shape="rectangle">
             <gradient
                 android:angle="140"
-                android:startColor="#4C4CB2"
-                android:endColor="#4C4CB280" />
+                android:startColor="@color/button_start"
+                android:endColor="@color/button_end" />
             <corners android:radius="8dp" />
             <stroke
                 android:width="1dp"
-                android:color="#6B6BD4" />
+                android:color="@color/button_stroke" />
         </shape>
     </item>
 
@@ -17,12 +17,12 @@
         <shape android:shape="rectangle">
             <gradient
                 android:angle="140"
-                android:startColor="#4C4CB2"
-                android:endColor="#4C4CB299" />
+                android:startColor="@color/button_start"
+                android:endColor="@color/button_end" />
             <corners android:radius="8dp" />
             <stroke
                 android:width="1dp"
-                android:color="#3D3D99" />
+                android:color="@color/button_stroke" />
         </shape>
     </item>
 </selector>

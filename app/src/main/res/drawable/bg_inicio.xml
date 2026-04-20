@@ -4,9 +4,9 @@
         <shape android:shape="rectangle">
             <gradient
                 android:angle="135"
-                android:centerColor="#1D2A38"
-                android:endColor="#101820"
-                android:startColor="#1B2633" />
+                android:centerColor="@color/bg_center"
+                android:endColor="@color/bg_end"
+                android:startColor="@color/bg_start" />
         </shape>
     </item>
 
@@ -18,7 +18,7 @@
             <size
                 android:width="360dp"
                 android:height="360dp" />
-            <solid android:color="#1A3D66" />
+            <solid android:color="@color/bg_blob_top" />
         </shape>
     </item>
 
@@ -30,7 +30,7 @@
             <size
                 android:width="380dp"
                 android:height="380dp" />
-            <solid android:color="#153756" />
+            <solid android:color="@color/bg_blob_bottom" />
         </shape>
     </item>
 </layer-list>
