@@ -184,7 +184,7 @@
         android:hint="@string/productos_hint_precio"
         android:textColor="@color/text_primary"
         android:textColorHint="@color/text_hint"
-        android:inputType="number"
+        android:inputType="numberDecimal"
         android:clickable="true"
         android:focusable="true"
         android:textSize="18sp"

@@ -1,7 +1,14 @@
 package com.example.puntodeventa;
 
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,6 +17,16 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 public class PantallaProductos extends AppCompatActivity {
+
+    private static final String DB_NOMBRE = "administracion";
+    private static final int DB_VERSION = 1;
+    private static final String TABLA_PRODUCTOS = "productos";
+
+    private EditText inputCodigo;
+    private EditText inputNombre;
+    private EditText inputDescripcion;
+    private EditText inputExistencia;
+    private EditText inputPrecio;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,5 +49,294 @@ public class PantallaProductos extends AppCompatActivity {
             );
             return insets;
         });
+
+        inputCodigo = findViewById(R.id.inputcodigo);
+        inputNombre = findViewById(R.id.inputnombre);
+        inputDescripcion = findViewById(R.id.inputdescripcion);
+        inputExistencia = findViewById(R.id.inputexistencia);
+        inputPrecio = findViewById(R.id.inputprecio);
+
+        Button btnGuardar = findViewById(R.id.btnGuardar);
+        Button btnConsultar = findViewById(R.id.btnConsultar);
+        Button btnEliminar = findViewById(R.id.btnEliminar);
+        Button btnModificar = findViewById(R.id.btnModificar);
+
+        btnGuardar.setOnClickListener(this::guardarProducto);
+        btnConsultar.setOnClickListener(this::consultarProducto);
+        btnEliminar.setOnClickListener(this::eliminarProducto);
+        btnModificar.setOnClickListener(this::modificarProducto);
+    }
+
+    public void guardarProducto(View v) {
+        if (!validarCamposCompletos()) {
+            return;
+        }
+
+        Integer codigo = obtenerCodigoValido();
+        Integer existencia = obtenerExistenciaValida();
+        Double precio = obtenerPrecioValido();
+
+        if (codigo == null || existencia == null || precio == null) {
+            return;
+        }
+
+        String nombre = inputNombre.getText().toString().trim();
+        String descripcion = inputDescripcion.getText().toString().trim();
+
+        AdminSqLite admin = new AdminSqLite(this, DB_NOMBRE, null, DB_VERSION);
+        SQLiteDatabase bd = null;
+        Cursor fila = null;
+
+        try {
+            bd = admin.getWritableDatabase();
+            fila = bd.rawQuery(
+                    "select codigo from " + TABLA_PRODUCTOS + " where codigo=?",
+                    new String[]{String.valueOf(codigo)}
+            );
+
+            if (fila.moveToFirst()) {
+                inputCodigo.setError("Este codigo ya existe");
+                inputCodigo.requestFocus();
+                mostrarMensaje("Ya existe un producto con ese codigo");
+                return;
+            }
+
+            ContentValues registro = new ContentValues();
+            registro.put("codigo", codigo);
+            registro.put("nombre", nombre);
+            registro.put("descripcion", descripcion);
+            registro.put("existencia", existencia);
+            registro.put("precio", precio);
+
+            long resultado = bd.insert(TABLA_PRODUCTOS, null, registro);
+            if (resultado == -1) {
+                mostrarMensaje("No se pudo guardar el producto");
+                return;
+            }
+
+            limpiarCampos();
+            mostrarMensaje("Producto guardado correctamente");
+        } catch (SQLiteException e) {
+            mostrarMensaje("Error al guardar en base de datos");
+        } finally {
+            if (fila != null) {
+                fila.close();
+            }
+            if (bd != null) {
+                bd.close();
+            }
+        }
+    }
+
+    public void consultarProducto(View v) {
+        Integer codigo = obtenerCodigoValido();
+        if (codigo == null) {
+            return;
+        }
+
+        AdminSqLite admin = new AdminSqLite(this, DB_NOMBRE, null, DB_VERSION);
+        SQLiteDatabase bd = null;
+        Cursor fila = null;
+
+        try {
+            bd = admin.getReadableDatabase();
+            fila = bd.rawQuery(
+                    "select nombre, descripcion, existencia, precio from " + TABLA_PRODUCTOS + " where codigo=?",
+                    new String[]{String.valueOf(codigo)}
+            );
+
+            if (fila.moveToFirst()) {
+                inputNombre.setText(fila.getString(0));
+                inputDescripcion.setText(fila.getString(1));
+                inputExistencia.setText(String.valueOf(fila.getInt(2)));
+                inputPrecio.setText(String.valueOf(fila.getDouble(3)));
+                mostrarMensaje("Producto encontrado");
+            } else {
+                inputNombre.setText("");
+                inputDescripcion.setText("");
+                inputExistencia.setText("");
+                inputPrecio.setText("");
+                mostrarMensaje("No existe producto con ese codigo");
+            }
+        } catch (SQLiteException e) {
+            mostrarMensaje("Error al consultar la base de datos");
+        } finally {
+            if (fila != null) {
+                fila.close();
+            }
+            if (bd != null) {
+                bd.close();
+            }
+        }
+    }
+
+    public void eliminarProducto(View v) {
+        Integer codigo = obtenerCodigoValido();
+        if (codigo == null) {
+            return;
+        }
+
+        AdminSqLite admin = new AdminSqLite(this, DB_NOMBRE, null, DB_VERSION);
+        SQLiteDatabase bd = null;
+
+        try {
+            bd = admin.getWritableDatabase();
+            int bandera = bd.delete(TABLA_PRODUCTOS, "codigo=?", new String[]{String.valueOf(codigo)});
+
+            if (bandera == 1) {
+                limpiarCampos();
+                mostrarMensaje("Producto eliminado");
+            } else {
+                mostrarMensaje("No existe producto en la base de datos");
+            }
+        } catch (SQLiteException e) {
+            mostrarMensaje("Error al eliminar en base de datos");
+        } finally {
+            if (bd != null) {
+                bd.close();
+            }
+        }
+    }
+
+    public void modificarProducto(View v) {
+        if (!validarCamposCompletos()) {
+            return;
+        }
+
+        Integer codigo = obtenerCodigoValido();
+        Integer existencia = obtenerExistenciaValida();
+        Double precio = obtenerPrecioValido();
+
+        if (codigo == null || existencia == null || precio == null) {
+            return;
+        }
+
+        String nombre = inputNombre.getText().toString().trim();
+        String descripcion = inputDescripcion.getText().toString().trim();
+
+        AdminSqLite admin = new AdminSqLite(this, DB_NOMBRE, null, DB_VERSION);
+        SQLiteDatabase bd = null;
+
+        try {
+            bd = admin.getWritableDatabase();
+
+            ContentValues registro = new ContentValues();
+            registro.put("codigo", codigo);
+            registro.put("nombre", nombre);
+            registro.put("descripcion", descripcion);
+            registro.put("existencia", existencia);
+            registro.put("precio", precio);
+
+            int cant = bd.update(TABLA_PRODUCTOS, registro, "codigo=?", new String[]{String.valueOf(codigo)});
+
+            if (cant == 1) {
+                mostrarMensaje("Datos actualizados correctamente");
+            } else {
+                mostrarMensaje("No existe producto en la base de datos");
+            }
+        } catch (SQLiteException e) {
+            mostrarMensaje("Error al actualizar en base de datos");
+        } finally {
+            if (bd != null) {
+                bd.close();
+            }
+        }
+    }
+
+    private boolean validarCamposCompletos() {
+        if (inputCodigo.getText().toString().trim().isEmpty()) {
+            inputCodigo.setError("El codigo es obligatorio");
+            inputCodigo.requestFocus();
+            return false;
+        }
+        if (inputNombre.getText().toString().trim().isEmpty()) {
+            inputNombre.setError("El nombre es obligatorio");
+            inputNombre.requestFocus();
+            return false;
+        }
+        if (inputDescripcion.getText().toString().trim().isEmpty()) {
+            inputDescripcion.setError("La descripcion es obligatoria");
+            inputDescripcion.requestFocus();
+            return false;
+        }
+        if (inputExistencia.getText().toString().trim().isEmpty()) {
+            inputExistencia.setError("La existencia es obligatoria");
+            inputExistencia.requestFocus();
+            return false;
+        }
+        if (inputPrecio.getText().toString().trim().isEmpty()) {
+            inputPrecio.setError("El precio es obligatorio");
+            inputPrecio.requestFocus();
+            return false;
+        }
+        return true;
+    }
+
+    private Integer obtenerCodigoValido() {
+        String codigoTexto = inputCodigo.getText().toString().trim();
+        if (codigoTexto.isEmpty()) {
+            inputCodigo.setError("El codigo es obligatorio");
+            inputCodigo.requestFocus();
+            return null;
+        }
+        try {
+            int codigo = Integer.parseInt(codigoTexto);
+            if (codigo <= 0) {
+                inputCodigo.setError("El codigo debe ser mayor que 0");
+                inputCodigo.requestFocus();
+                return null;
+            }
+            return codigo;
+        } catch (NumberFormatException e) {
+            inputCodigo.setError("Codigo invalido");
+            inputCodigo.requestFocus();
+            return null;
+        }
+    }
+
+    private Integer obtenerExistenciaValida() {
+        String existenciaTexto = inputExistencia.getText().toString().trim();
+        try {
+            int existencia = Integer.parseInt(existenciaTexto);
+            if (existencia < 0) {
+                inputExistencia.setError("La existencia no puede ser negativa");
+                inputExistencia.requestFocus();
+                return null;
+            }
+            return existencia;
+        } catch (NumberFormatException e) {
+            inputExistencia.setError("Existencia invalida");
+            inputExistencia.requestFocus();
+            return null;
+        }
+    }
+
+    private Double obtenerPrecioValido() {
+        String precioTexto = inputPrecio.getText().toString().trim();
+        try {
+            double precio = Double.parseDouble(precioTexto);
+            if (precio <= 0) {
+                inputPrecio.setError("El precio debe ser mayor que 0");
+                inputPrecio.requestFocus();
+                return null;
+            }
+            return precio;
+        } catch (NumberFormatException e) {
+            inputPrecio.setError("Precio invalido");
+            inputPrecio.requestFocus();
+            return null;
+        }
+    }
+
+    private void mostrarMensaje(String mensaje) {
+        Toast.makeText(this, mensaje, Toast.LENGTH_SHORT).show();
+    }
+
+    private void limpiarCampos() {
+        inputCodigo.setText("");
+        inputNombre.setText("");
+        inputDescripcion.setText("");
+        inputExistencia.setText("");
+        inputPrecio.setText("");
     }
 }
