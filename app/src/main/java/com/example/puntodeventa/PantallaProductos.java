@@ -95,7 +95,6 @@ public class PantallaProductos extends AppCompatActivity {
             );
 
             if (fila.moveToFirst()) {
-                inputCodigo.setError("Este codigo ya existe");
                 inputCodigo.requestFocus();
                 mostrarMensaje("Ya existe un producto con ese codigo");
                 return;
@@ -245,28 +244,28 @@ public class PantallaProductos extends AppCompatActivity {
 
     private boolean validarCamposCompletos() {
         if (inputCodigo.getText().toString().trim().isEmpty()) {
-            inputCodigo.setError("El codigo es obligatorio");
             inputCodigo.requestFocus();
+            mostrarMensaje("El codigo es obligatorio");
             return false;
         }
         if (inputNombre.getText().toString().trim().isEmpty()) {
-            inputNombre.setError("El nombre es obligatorio");
             inputNombre.requestFocus();
+            mostrarMensaje("El nombre es obligatorio");
             return false;
         }
         if (inputDescripcion.getText().toString().trim().isEmpty()) {
-            inputDescripcion.setError("La descripcion es obligatoria");
             inputDescripcion.requestFocus();
+            mostrarMensaje("La descripcion es obligatoria");
             return false;
         }
         if (inputExistencia.getText().toString().trim().isEmpty()) {
-            inputExistencia.setError("La existencia es obligatoria");
             inputExistencia.requestFocus();
+            mostrarMensaje("La existencia es obligatoria");
             return false;
         }
         if (inputPrecio.getText().toString().trim().isEmpty()) {
-            inputPrecio.setError("El precio es obligatorio");
             inputPrecio.requestFocus();
+            mostrarMensaje("El precio es obligatorio");
             return false;
         }
         return true;
@@ -275,21 +274,21 @@ public class PantallaProductos extends AppCompatActivity {
     private Integer obtenerCodigoValido() {
         String codigoTexto = inputCodigo.getText().toString().trim();
         if (codigoTexto.isEmpty()) {
-            inputCodigo.setError("El codigo es obligatorio");
             inputCodigo.requestFocus();
+            mostrarMensaje("El codigo es obligatorio");
             return null;
         }
         try {
             int codigo = Integer.parseInt(codigoTexto);
             if (codigo <= 0) {
-                inputCodigo.setError("El codigo debe ser mayor que 0");
                 inputCodigo.requestFocus();
+                mostrarMensaje("El codigo debe ser mayor que 0");
                 return null;
             }
             return codigo;
         } catch (NumberFormatException e) {
-            inputCodigo.setError("Codigo invalido");
             inputCodigo.requestFocus();
+            mostrarMensaje("Codigo invalido");
             return null;
         }
     }
@@ -299,14 +298,14 @@ public class PantallaProductos extends AppCompatActivity {
         try {
             int existencia = Integer.parseInt(existenciaTexto);
             if (existencia < 0) {
-                inputExistencia.setError("La existencia no puede ser negativa");
                 inputExistencia.requestFocus();
+                mostrarMensaje("La existencia no puede ser negativa");
                 return null;
             }
             return existencia;
         } catch (NumberFormatException e) {
-            inputExistencia.setError("Existencia invalida");
             inputExistencia.requestFocus();
+            mostrarMensaje("Existencia invalida");
             return null;
         }
     }
@@ -316,14 +315,14 @@ public class PantallaProductos extends AppCompatActivity {
         try {
             double precio = Double.parseDouble(precioTexto);
             if (precio <= 0) {
-                inputPrecio.setError("El precio debe ser mayor que 0");
                 inputPrecio.requestFocus();
+                mostrarMensaje("El precio debe ser mayor que 0");
                 return null;
             }
             return precio;
         } catch (NumberFormatException e) {
-            inputPrecio.setError("Precio invalido");
             inputPrecio.requestFocus();
+            mostrarMensaje("Precio invalido");
             return null;
         }
     }
