@@ -4,39 +4,145 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="24dp"
+    android:background="@drawable/bg_inicio"
     tools:context=".PantallaInicial">
 
-    <TextView
-        android:id="@+id/tvTitulo"
+    <LinearLayout
+        android:id="@+id/tituloAnimado"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="172dp"
-        android:text="@string/store_title"
-        android:textSize="32sp"
-        android:textStyle="bold" />
+        android:layout_marginTop="150dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/titleRowTop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal" />
+
+        <LinearLayout
+            android:id="@+id/titleRowBottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:gravity="center"
+            android:orientation="horizontal" />
+    </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/contenedorBotones"
+        android:id="@+id/cardInicio"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tvTitulo"
-        android:layout_marginTop="128dp"
-        android:orientation="vertical">
+        android:layout_below="@id/tituloAnimado"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/bg_card_inicio"
+        android:orientation="vertical"
+        android:padding="24dp">
 
         <Button
             android:id="@+id/btnProductos"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Productos" />
+            android:layout_height="50dp"
+            android:layout_marginTop="6dp"
+            android:background="@drawable/bg_button_new"
+            android:text="@string/productos_titulo"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            android:textSize="17sp"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/btnVentas"
             android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="14dp"
+            android:background="@drawable/bg_button_new"
+            android:text="Ventas"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            android:textSize="17sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:id="@+id/loader"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Ventas" />
+            android:layout_marginTop="22dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:id="@+id/truckWrapper"
+                android:layout_width="220dp"
+                android:layout_height="112dp">
+
+                <ImageView
+                    android:id="@+id/truckBody"
+                    android:layout_width="150dp"
+                    android:layout_height="74dp"
+                    android:layout_gravity="bottom|center_horizontal"
+                    android:layout_marginBottom="20dp"
+                    android:src="@drawable/ic_truck_body" />
+
+                <LinearLayout
+                    android:id="@+id/truckTires"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|center_horizontal"
+                    android:layout_marginBottom="7dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/tireLeft"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/bg_wheel" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+
+                    <ImageView
+                        android:id="@+id/tireRight"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/bg_wheel" />
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/roadLine"
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:layout_gravity="bottom"
+                    android:background="#232A32" />
+
+                <View
+                    android:id="@+id/roadDash1"
+                    android:layout_width="18dp"
+                    android:layout_height="2dp"
+                    android:layout_gravity="bottom|end"
+                    android:layout_marginBottom="0dp"
+                    android:layout_marginEnd="14dp"
+                    android:background="#FFFFFF" />
+
+                <View
+                    android:id="@+id/roadDash2"
+                    android:layout_width="10dp"
+                    android:layout_height="2dp"
+                    android:layout_gravity="bottom|end"
+                    android:layout_marginBottom="0dp"
+                    android:layout_marginEnd="2dp"
+                    android:background="#FFFFFF" />
+
+            </FrameLayout>
+        </LinearLayout>
     </LinearLayout>
 
 </RelativeLayout>

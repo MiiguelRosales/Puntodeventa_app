@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">Punto de venta</string>
     <string name="store_title">Abarrotes El Baraton</string>
-    <string name="tap_to_start">Pulsa para comenzar</string>
     <string name="productos_titulo">Productos</string>
     <string name="productos_codigo">Codigo:</string>
     <string name="productos_hint_codigo">Ingresa codigo...</string>
