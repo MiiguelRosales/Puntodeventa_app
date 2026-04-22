@@ -176,7 +176,7 @@
             android:layout_marginTop="12dp"
             android:background="@drawable/bg_button_new"
             android:textColor="@color/button_text"
-            android:text="Buscar y calcular" />
+            android:text="Buscar" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -242,48 +242,56 @@
             android:textSize="18sp"
             android:textStyle="bold" />
 
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:stretchColumns="1">
+
+            <TableRow>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Nombre"
+                    android:textColor="@color/text_hint"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Cantidad"
+                    android:textColor="@color/text_hint"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Subtotal"
+                    android:textColor="@color/text_hint"
+                    android:textStyle="bold" />
+            </TableRow>
+        </TableLayout>
+
         <ScrollView
+            android:id="@+id/scrollProductosAgregados"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
             android:layout_weight="1"
             android:fillViewport="true">
 
             <TableLayout
+                android:id="@+id/tblProductosAgregados"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:stretchColumns="1">
-
-                <TableRow>
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="Código"
-                        android:textColor="@color/text_hint"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="Nombre"
-                        android:textColor="@color/text_hint"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:textColor="@color/text_hint"
-                        android:text="Subtotal"
-                        android:textStyle="bold" />
-                </TableRow>
-
             </TableLayout>
         </ScrollView>
 
@@ -295,7 +303,7 @@
             android:layout_marginTop="8dp"
             android:background="@drawable/bg_button_new"
                 android:textColor="@color/button_text"
-            android:text="Nueva venta" />
+            android:text="Cancelar venta" />
     </LinearLayout>
 
 </RelativeLayout>

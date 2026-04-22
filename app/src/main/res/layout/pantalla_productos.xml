@@ -246,6 +246,22 @@
                 android:textColor="@color/button_text"
                 android:text="@string/productos_btn_modificar" />
         </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <Button
+                android:id="@+id/btnLimpiar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_button_new"
+                android:textColor="@color/button_text"
+                android:text="@string/productos_btn_limpiar" />
+            </LinearLayout>
     </LinearLayout>
 
     <TextView

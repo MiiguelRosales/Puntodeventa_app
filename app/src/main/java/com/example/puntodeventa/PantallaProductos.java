@@ -60,11 +60,19 @@ public class PantallaProductos extends AppCompatActivity {
         Button btnConsultar = findViewById(R.id.btnConsultar);
         Button btnEliminar = findViewById(R.id.btnEliminar);
         Button btnModificar = findViewById(R.id.btnModificar);
+        Button btnLimpiar = findViewById(R.id.btnLimpiar);
 
         btnGuardar.setOnClickListener(this::guardarProducto);
         btnConsultar.setOnClickListener(this::consultarProducto);
         btnEliminar.setOnClickListener(this::eliminarProducto);
         btnModificar.setOnClickListener(this::modificarProducto);
+        btnLimpiar.setOnClickListener(this::limpiarFormulario);
+    }
+
+    public void limpiarFormulario(View v) {
+        limpiarCampos();
+        inputCodigo.requestFocus();
+        mostrarMensaje("Campos limpiados");
     }
 
     public void guardarProducto(View v) {
