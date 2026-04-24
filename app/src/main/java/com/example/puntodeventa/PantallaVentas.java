@@ -80,6 +80,8 @@ public class PantallaVentas extends AppCompatActivity {
         Button btnTerminarVenta = findViewById(R.id.btnTerminarVenta);
         Button btnNuevaVenta = findViewById(R.id.btnNuevaVenta);
 
+        aplicarTextosTraducidos(btnBuscarCalcular, btnAgregar, btnTerminarVenta, btnNuevaVenta);
+
         btnBuscarCalcular.setOnClickListener(this::buscarYCalcular);
         btnAgregar.setOnClickListener(this::agregarProducto);
         btnTerminarVenta.setOnClickListener(this::terminarVenta);
@@ -102,6 +104,41 @@ public class PantallaVentas extends AppCompatActivity {
 
         tvSubtotal.setText("0.00");
         tvTotal.setText("0.00");
+    }
+
+    private void aplicarTextosTraducidos(Button btnBuscarCalcular, Button btnAgregar,
+                                         Button btnTerminarVenta, Button btnNuevaVenta) {
+        TextView tvTituloVentas = findViewById(R.id.tvTituloVentas);
+        TextView lblCodigo = findViewById(R.id.lblCodigoVenta);
+        TextView lblNombre = findViewById(R.id.lblNombreVenta);
+        TextView lblPrecio = findViewById(R.id.lblPrecioVenta);
+        TextView lblCantidad = findViewById(R.id.tvCantidad);
+        TextView lblSubtotal = findViewById(R.id.lblSubtotalVenta);
+        TextView lblTotal = findViewById(R.id.lblTotalVenta);
+        TextView lblProductosAgregados = findViewById(R.id.lblProductosAgregadosVenta);
+        TextView lblColNombre = findViewById(R.id.lblColNombreVenta);
+        TextView lblColCantidad = findViewById(R.id.lblColCantidadVenta);
+        TextView lblColSubtotal = findViewById(R.id.lblColSubtotalVenta);
+
+        tvTituloVentas.setText(GestorTraducciones.obtenerTexto(this, "lbl_titulo_ventas", "Ventas"));
+        lblCodigo.setText(GestorTraducciones.obtenerTexto(this, "lbl_codigo", "Código:"));
+        lblNombre.setText(GestorTraducciones.obtenerTexto(this, "lbl_nombre", "Nombre:"));
+        lblPrecio.setText(GestorTraducciones.obtenerTexto(this, "lbl_precio", "Precio:"));
+        lblCantidad.setText(GestorTraducciones.obtenerTexto(this, "lbl_cantidad", "Cantidad:"));
+        lblSubtotal.setText(GestorTraducciones.obtenerTexto(this, "lbl_subtotal", "Subtotal:"));
+        lblTotal.setText(GestorTraducciones.obtenerTexto(this, "lbl_total", "Total:"));
+        lblProductosAgregados.setText(GestorTraducciones.obtenerTexto(this, "lbl_productos_agregados", "Productos agregados:"));
+        lblColNombre.setText(GestorTraducciones.obtenerTexto(this, "lbl_col_nombre", "Nombre"));
+        lblColCantidad.setText(GestorTraducciones.obtenerTexto(this, "lbl_col_cantidad", "Cantidad"));
+        lblColSubtotal.setText(GestorTraducciones.obtenerTexto(this, "lbl_col_subtotal", "Subtotal"));
+
+        etCodigo.setHint(GestorTraducciones.obtenerTexto(this, "hint_codigo", "Ingresa código..."));
+        etCantidad.setHint(GestorTraducciones.obtenerTexto(this, "hint_cantidad", "Ingresa cantidad..."));
+
+        btnBuscarCalcular.setText(GestorTraducciones.obtenerTexto(this, "btn_buscar", "Buscar"));
+        btnAgregar.setText(GestorTraducciones.obtenerTexto(this, "btn_agregar", "Agregar"));
+        btnTerminarVenta.setText(GestorTraducciones.obtenerTexto(this, "btn_finalizar", "Finalizar Venta"));
+        btnNuevaVenta.setText(GestorTraducciones.obtenerTexto(this, "btn_cancelar_venta", "Cancelar venta"));
     }
 
     public void buscarYCalcular(View v) {

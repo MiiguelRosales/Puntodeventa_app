@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -62,11 +63,42 @@ public class PantallaProductos extends AppCompatActivity {
         Button btnModificar = findViewById(R.id.btnModificar);
         Button btnLimpiar = findViewById(R.id.btnLimpiar);
 
+        aplicarTextosTraducidos(btnGuardar, btnConsultar, btnEliminar, btnModificar, btnLimpiar);
+
         btnGuardar.setOnClickListener(this::guardarProducto);
         btnConsultar.setOnClickListener(this::consultarProducto);
         btnEliminar.setOnClickListener(this::eliminarProducto);
         btnModificar.setOnClickListener(this::modificarProducto);
         btnLimpiar.setOnClickListener(this::limpiarFormulario);
+    }
+
+    private void aplicarTextosTraducidos(Button btnGuardar, Button btnConsultar, Button btnEliminar,
+                                         Button btnModificar, Button btnLimpiar) {
+        TextView prodTitulo = findViewById(R.id.ProdTitulo);
+        TextView txtcodigo = findViewById(R.id.txtcodigo);
+        TextView txtnombre = findViewById(R.id.txtnombre);
+        TextView txtdescripcion = findViewById(R.id.txtdescripcion);
+        TextView txtexistencia = findViewById(R.id.txtexistencia);
+        TextView txtprecio = findViewById(R.id.txtprecio);
+
+        prodTitulo.setText(GestorTraducciones.obtenerTexto(this, "lbl_titulo_productos", "Registro de Productos"));
+        txtcodigo.setText(GestorTraducciones.obtenerTexto(this, "lbl_codigo", "Código:"));
+        txtnombre.setText(GestorTraducciones.obtenerTexto(this, "lbl_nombre", "Nombre:"));
+        txtdescripcion.setText(GestorTraducciones.obtenerTexto(this, "lbl_descripcion", "Descripción:"));
+        txtexistencia.setText(GestorTraducciones.obtenerTexto(this, "lbl_existencia", "Existencia:"));
+        txtprecio.setText(GestorTraducciones.obtenerTexto(this, "lbl_precio", "Precio:"));
+
+        inputCodigo.setHint(GestorTraducciones.obtenerTexto(this, "hint_codigo", "Ingresa código..."));
+        inputNombre.setHint(GestorTraducciones.obtenerTexto(this, "hint_nombre", "Ingresa nombre..."));
+        inputDescripcion.setHint(GestorTraducciones.obtenerTexto(this, "hint_descripcion", "Ingresa descripción..."));
+        inputExistencia.setHint(GestorTraducciones.obtenerTexto(this, "hint_existencia", "Ingresa existencia..."));
+        inputPrecio.setHint(GestorTraducciones.obtenerTexto(this, "hint_precio", "Ingresa precio..."));
+
+        btnGuardar.setText(GestorTraducciones.obtenerTexto(this, "btn_guardar", "Guardar"));
+        btnConsultar.setText(GestorTraducciones.obtenerTexto(this, "btn_consultar", "Consultar"));
+        btnEliminar.setText(GestorTraducciones.obtenerTexto(this, "btn_eliminar", "Eliminar"));
+        btnModificar.setText(GestorTraducciones.obtenerTexto(this, "btn_modificar", "Modificar"));
+        btnLimpiar.setText(GestorTraducciones.obtenerTexto(this, "btn_limpiar", "Limpiar"));
     }
 
     public void limpiarFormulario(View v) {

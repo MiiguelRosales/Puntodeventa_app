@@ -31,6 +31,9 @@ public class PantallaInicial extends AppCompatActivity {
         Button btnProductos = findViewById(R.id.btnProductos);
         Button btnVentas = findViewById(R.id.btnVentas);
         Button btnTema = findViewById(R.id.btnTema);
+        Button btnIdioma = findViewById(R.id.btnIdioma);
+
+        aplicarTextosTraducidos(btnProductos, btnVentas, btnTema, btnIdioma);
 
         btnProductos.setOnClickListener(v -> abrirPantallaProductos());
         btnVentas.setOnClickListener(v -> abrirPantallaVentas());
@@ -38,7 +41,10 @@ public class PantallaInicial extends AppCompatActivity {
             ThemeManager.toggleTheme(this);
             recreate();
         });
-        btnTema.setText(ThemeManager.getToggleLabel(this));
+        btnIdioma.setOnClickListener(v -> {
+            GestorTraducciones.alternarIdioma(this);
+            aplicarTextosTraducidos(btnProductos, btnVentas, btnTema, btnIdioma);
+        });
 
         iniciarAnimacionTitulo();
         iniciarAnimacionLoader();
@@ -56,6 +62,17 @@ public class PantallaInicial extends AppCompatActivity {
 
     private void abrirPantallaVentas() {
         startActivity(new Intent(this, PantallaVentas.class));
+    }
+
+    private void aplicarTextosTraducidos(Button btnProductos, Button btnVentas, Button btnTema, Button btnIdioma) {
+        btnProductos.setText(GestorTraducciones.obtenerTexto(this, "btn_productos", "Productos"));
+        btnVentas.setText(GestorTraducciones.obtenerTexto(this, "btn_ventas", "Ventas"));
+        if (ThemeManager.isNight(this)) {
+            btnTema.setText(GestorTraducciones.obtenerTexto(this, "btn_tema_claro", "Modo claro"));
+        } else {
+            btnTema.setText(GestorTraducciones.obtenerTexto(this, "btn_tema_oscuro", "Modo oscuro"));
+        }
+        btnIdioma.setText(GestorTraducciones.obtenerTexto(this, "btn_idioma", "Cambiar idioma"));
     }
 
     private void iniciarAnimacionTitulo() {
