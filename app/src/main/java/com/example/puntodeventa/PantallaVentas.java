@@ -79,13 +79,15 @@ public class PantallaVentas extends AppCompatActivity {
         Button btnAgregar = findViewById(R.id.btnAgregar);
         Button btnTerminarVenta = findViewById(R.id.btnTerminarVenta);
         Button btnNuevaVenta = findViewById(R.id.btnNuevaVenta);
+        Button btnExportarPdf = findViewById(R.id.btnExportarPdf);
 
-        aplicarTextosTraducidos(btnBuscarCalcular, btnAgregar, btnTerminarVenta, btnNuevaVenta);
+        aplicarTextosTraducidos(btnBuscarCalcular, btnAgregar, btnTerminarVenta, btnNuevaVenta, btnExportarPdf);
 
         btnBuscarCalcular.setOnClickListener(this::buscarYCalcular);
         btnAgregar.setOnClickListener(this::agregarProducto);
         btnTerminarVenta.setOnClickListener(this::terminarVenta);
         btnNuevaVenta.setOnClickListener(this::nuevaVenta);
+        btnExportarPdf.setOnClickListener(this::exportarPdf);
 
         etCantidad.addTextChangedListener(new TextWatcher() {
             @Override
@@ -107,7 +109,8 @@ public class PantallaVentas extends AppCompatActivity {
     }
 
     private void aplicarTextosTraducidos(Button btnBuscarCalcular, Button btnAgregar,
-                                         Button btnTerminarVenta, Button btnNuevaVenta) {
+                                         Button btnTerminarVenta, Button btnNuevaVenta,
+                                         Button btnExportarPdf) {
         TextView tvTituloVentas = findViewById(R.id.tvTituloVentas);
         TextView lblCodigo = findViewById(R.id.lblCodigoVenta);
         TextView lblNombre = findViewById(R.id.lblNombreVenta);
@@ -139,6 +142,7 @@ public class PantallaVentas extends AppCompatActivity {
         btnAgregar.setText(GestorTraducciones.obtenerTexto(this, "btn_agregar", "Agregar"));
         btnTerminarVenta.setText(GestorTraducciones.obtenerTexto(this, "btn_finalizar", "Finalizar Venta"));
         btnNuevaVenta.setText(GestorTraducciones.obtenerTexto(this, "btn_cancelar_venta", "Cancelar venta"));
+        btnExportarPdf.setText(GestorTraducciones.obtenerTexto(this, "btn_exportar_pdf", "Exportar PDF"));
     }
 
     public void buscarYCalcular(View v) {
@@ -305,6 +309,34 @@ public class PantallaVentas extends AppCompatActivity {
     public void nuevaVenta(View v) {
         limpiarVentaCompleta();
         mostrarMensaje("Venta cancelada");
+    }
+
+    public void exportarPdf(View v) {
+        if (itemsVenta.isEmpty()) {
+            mostrarMensaje("No hay productos para exportar");
+            return;
+        }
+
+        List<GeneradorReportes.FilaReporte> filas = new ArrayList<>();
+        for (ItemVenta item : itemsVenta) {
+            filas.add(new GeneradorReportes.FilaReporte(
+                    item.nombre,
+                    item.cantidad,
+                    formatearMoneda(item.subtotal)
+            ));
+        }
+
+        double total = 0;
+        for (ItemVenta item : itemsVenta) {
+            total += item.subtotal;
+        }
+
+        String rutaArchivo = GeneradorReportes.generarReporteVentas(this, filas, formatearMoneda(total));
+        if (rutaArchivo == null) {
+            mostrarMensaje("No se pudo generar el PDF");
+            return;
+        }
+        mostrarMensaje("PDF generado en: " + rutaArchivo);
     }
 
     private void recalcularSubtotal() {

@@ -304,15 +304,30 @@
             </TableLayout>
         </ScrollView>
 
-        <Button
-            android:id="@+id/btnNuevaVenta"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="end|bottom"
             android:layout_marginTop="8dp"
-            android:background="@drawable/bg_button_new"
-                android:textColor="@color/button_text"
-            android:text="Cancelar venta" />
+            android:gravity="end"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnExportarPdf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/bg_button_new"
+                android:text="Exportar PDF"
+                android:textColor="@color/button_text" />
+
+            <Button
+                android:id="@+id/btnNuevaVenta"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_button_new"
+                android:text="Cancelar venta"
+                android:textColor="@color/button_text" />
+        </LinearLayout>
     </LinearLayout>
 
 </RelativeLayout>
