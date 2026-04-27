@@ -1,0 +1,14 @@
+{
+  "stock": {
+    "minimo_alerta": 3,
+    "critico": 1,
+    "bloquear_sin_stock": true
+  },
+  "alertas": {
+    "mostrar_popup": true,
+    "usar_color": true,
+    "mensaje_bajo": "Stock bajo quedan pocas unidades del producto",
+    "mensaje_critico": "Stock crítico queda una sola unidad del producto",
+    "mensaje_sin_stock": "Producto agotado sin stock"
+  }
+}

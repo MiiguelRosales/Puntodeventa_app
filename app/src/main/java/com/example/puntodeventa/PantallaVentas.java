@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -197,6 +198,15 @@ public class PantallaVentas extends AppCompatActivity {
             return;
         }
 
+        int disponible = calcularDisponible(producto.existencia, codigo);
+        if (!manejarAlertaStock(disponible)) {
+            tvNombre.setText(producto.nombre);
+            tvPrecio.setText(formatearMoneda(producto.precio));
+            precioActual = producto.precio;
+            tvSubtotal.setText("0.00");
+            return;
+        }
+
         tvNombre.setText(producto.nombre);
         tvPrecio.setText(formatearMoneda(producto.precio));
         precioActual = producto.precio;
@@ -210,14 +220,6 @@ public class PantallaVentas extends AppCompatActivity {
         Integer cantidad = obtenerCantidadValida();
         if (cantidad == null) {
             tvSubtotal.setText("0.00");
-            return;
-        }
-
-        int cantidadReservada = obtenerCantidadReservadaPorCodigo(codigo);
-        int disponible = producto.existencia - cantidadReservada;
-        if (disponible <= 0) {
-            tvSubtotal.setText("0.00");
-            mostrarMensaje("Ya no hay existencia disponible para este producto en esta venta");
             return;
         }
 
@@ -250,10 +252,8 @@ public class PantallaVentas extends AppCompatActivity {
             return;
         }
 
-        int cantidadReservada = obtenerCantidadReservadaPorCodigo(codigo);
-        int disponible = producto.existencia - cantidadReservada;
-        if (disponible <= 0) {
-            mostrarMensaje("Ya no hay existencia disponible para este producto en esta venta");
+        int disponible = calcularDisponible(producto.existencia, codigo);
+        if (!manejarAlertaStock(disponible)) {
             return;
         }
 
@@ -569,6 +569,7 @@ public class PantallaVentas extends AppCompatActivity {
         tvSubtotal.setText("0.00");
         precioActual = null;
         avisoCantidadSinProductoMostrado = false;
+        resetColorAlertaStock();
     }
 
     private void limpiarVentaCompleta() {
@@ -589,6 +590,50 @@ public class PantallaVentas extends AppCompatActivity {
     private void actualizarMonedaActual() {
         String etiqueta = GestorTraducciones.obtenerTexto(this, "lbl_moneda_actual", "Moneda actual:");
         tvMonedaActualVentas.setText(etiqueta + " " + obtenerMonedaActual());
+    }
+
+    private int calcularDisponible(int existencia, int codigo) {
+        int cantidadReservada = obtenerCantidadReservadaPorCodigo(codigo);
+        return existencia - cantidadReservada;
+    }
+
+    private boolean manejarAlertaStock(int stockDisponible) {
+        ConfiguracionAlertasManager.EvaluacionStock evaluacion = ConfiguracionAlertasManager.evaluar(this, stockDisponible);
+
+        aplicarColorAlertaStock(evaluacion.nivel);
+
+        if (ConfiguracionAlertasManager.debeMostrarPopup(this) && evaluacion.mensaje != null && !evaluacion.mensaje.trim().isEmpty()) {
+            mostrarMensaje(evaluacion.mensaje);
+        }
+
+        if (evaluacion.sinStock && ConfiguracionAlertasManager.debeBloquearSinStock(this)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private void aplicarColorAlertaStock(ConfiguracionAlertasManager.NivelStock nivel) {
+        if (!ConfiguracionAlertasManager.debeUsarColor(this)) {
+            return;
+        }
+        if (tvNombre == null) {
+            return;
+        }
+
+        if (nivel == ConfiguracionAlertasManager.NivelStock.CRITICO || nivel == ConfiguracionAlertasManager.NivelStock.SIN_STOCK) {
+            tvNombre.setTextColor(Color.parseColor("#D32F2F"));
+        } else if (nivel == ConfiguracionAlertasManager.NivelStock.BAJO) {
+            tvNombre.setTextColor(Color.parseColor("#F57C00"));
+        } else {
+            resetColorAlertaStock();
+        }
+    }
+
+    private void resetColorAlertaStock() {
+        if (tvNombre != null) {
+            tvNombre.setTextColor(getColor(R.color.text_primary));
+        }
     }
 
     private String obtenerMonedaActual() {

@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -224,15 +225,19 @@ public class PantallaProductos extends AppCompatActivity {
             if (fila.moveToFirst()) {
                 inputNombre.setText(fila.getString(0));
                 inputDescripcion.setText(fila.getString(1));
-                inputExistencia.setText(String.valueOf(fila.getInt(2)));
+                int existencia = fila.getInt(2);
+                inputExistencia.setText(String.valueOf(existencia));
                 inputPrecio.setText(String.valueOf(fila.getDouble(3)));
                 mostrarMensaje("Producto encontrado");
+
+                aplicarAlertaStockExistencia(existencia);
             } else {
                 inputNombre.setText("");
                 inputDescripcion.setText("");
                 inputExistencia.setText("");
                 inputPrecio.setText("");
                 mostrarMensaje("No existe producto con ese codigo");
+                resetColorExistencia();
             }
         } catch (SQLiteException e) {
             mostrarMensaje("Error al consultar la base de datos");
@@ -408,11 +413,34 @@ public class PantallaProductos extends AppCompatActivity {
         Toast.makeText(this, mensaje, Toast.LENGTH_SHORT).show();
     }
 
+    private void aplicarAlertaStockExistencia(int existencia) {
+        ConfiguracionAlertasManager.EvaluacionStock evaluacion = ConfiguracionAlertasManager.evaluar(this, existencia);
+        if (ConfiguracionAlertasManager.debeUsarColor(this)) {
+            if (evaluacion.nivel == ConfiguracionAlertasManager.NivelStock.CRITICO
+                    || evaluacion.nivel == ConfiguracionAlertasManager.NivelStock.SIN_STOCK) {
+                inputExistencia.setTextColor(Color.parseColor("#D32F2F"));
+            } else if (evaluacion.nivel == ConfiguracionAlertasManager.NivelStock.BAJO) {
+                inputExistencia.setTextColor(Color.parseColor("#F57C00"));
+            } else {
+                resetColorExistencia();
+            }
+        }
+
+        if (ConfiguracionAlertasManager.debeMostrarPopup(this) && evaluacion.mensaje != null && !evaluacion.mensaje.trim().isEmpty()) {
+            mostrarMensaje(evaluacion.mensaje);
+        }
+    }
+
+    private void resetColorExistencia() {
+        inputExistencia.setTextColor(getColor(R.color.text_primary));
+    }
+
     private void limpiarCampos() {
         inputCodigo.setText("");
         inputNombre.setText("");
         inputDescripcion.setText("");
         inputExistencia.setText("");
         inputPrecio.setText("");
+        resetColorExistencia();
     }
 }
