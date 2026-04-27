@@ -89,6 +89,8 @@ public class PantallaVentas extends AppCompatActivity {
         btnNuevaVenta.setOnClickListener(this::nuevaVenta);
         btnExportarPdf.setOnClickListener(this::exportarPdf);
 
+        aplicarConfiguracionVisual(btnBuscarCalcular, btnAgregar, btnTerminarVenta, btnNuevaVenta, btnExportarPdf);
+
         etCantidad.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -106,6 +108,24 @@ public class PantallaVentas extends AppCompatActivity {
 
         tvSubtotal.setText("0.00");
         tvTotal.setText("0.00");
+    }
+
+    private void aplicarConfiguracionVisual(Button btnBuscarCalcular, Button btnAgregar,
+                                            Button btnTerminarVenta, Button btnNuevaVenta,
+                                            Button btnExportarPdf) {
+        AppConfigManager.Configuracion config = AppConfigManager.obtenerConfiguracion(this);
+
+        AppConfigManager.aplicarColorEnfasis(
+                this,
+                config.apariencia.colorEnfasis,
+                btnBuscarCalcular,
+                btnAgregar,
+                btnTerminarVenta,
+                btnNuevaVenta,
+                btnExportarPdf
+        );
+
+        AppConfigManager.aplicarEscalaTexto(findViewById(R.id.mainVentas), config.apariencia.tamanoTexto);
     }
 
     private void aplicarTextosTraducidos(Button btnBuscarCalcular, Button btnAgregar,

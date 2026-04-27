@@ -1,0 +1,10 @@
+{
+  "apariencia": {
+    "tema_oscuro": false,
+    "color_enfasis": "#4CAF50",
+    "tamano_texto": "pequeno"
+  },
+  "negocio": {
+    "nombre_tienda": "El Baraton"
+  }
+}

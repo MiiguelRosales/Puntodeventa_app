@@ -70,6 +70,25 @@ public class PantallaProductos extends AppCompatActivity {
         btnEliminar.setOnClickListener(this::eliminarProducto);
         btnModificar.setOnClickListener(this::modificarProducto);
         btnLimpiar.setOnClickListener(this::limpiarFormulario);
+
+        aplicarConfiguracionVisual(btnGuardar, btnConsultar, btnEliminar, btnModificar, btnLimpiar);
+    }
+
+    private void aplicarConfiguracionVisual(Button btnGuardar, Button btnConsultar, Button btnEliminar,
+                                            Button btnModificar, Button btnLimpiar) {
+        AppConfigManager.Configuracion config = AppConfigManager.obtenerConfiguracion(this);
+
+        AppConfigManager.aplicarColorEnfasis(
+                this,
+                config.apariencia.colorEnfasis,
+                btnGuardar,
+                btnConsultar,
+                btnEliminar,
+                btnModificar,
+                btnLimpiar
+        );
+
+        AppConfigManager.aplicarEscalaTexto(findViewById(R.id.mainProductos), config.apariencia.tamanoTexto);
     }
 
     private void aplicarTextosTraducidos(Button btnGuardar, Button btnConsultar, Button btnEliminar,

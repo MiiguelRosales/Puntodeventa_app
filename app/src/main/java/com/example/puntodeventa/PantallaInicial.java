@@ -20,7 +20,14 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.util.Locale;
+
 public class PantallaInicial extends AppCompatActivity {
+
+    private Button btnProductos;
+    private Button btnVentas;
+    private Button btnConfiguracion;
+    private Button btnIdioma;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,23 +35,22 @@ public class PantallaInicial extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.pantalla_inicial);
 
-        Button btnProductos = findViewById(R.id.btnProductos);
-        Button btnVentas = findViewById(R.id.btnVentas);
-        Button btnTema = findViewById(R.id.btnTema);
-        Button btnIdioma = findViewById(R.id.btnIdioma);
+        btnProductos = findViewById(R.id.btnProductos);
+        btnVentas = findViewById(R.id.btnVentas);
+        btnConfiguracion = findViewById(R.id.btnConfiguracion);
+        btnIdioma = findViewById(R.id.btnIdioma);
 
-        aplicarTextosTraducidos(btnProductos, btnVentas, btnTema, btnIdioma);
+        aplicarTextosTraducidos(btnProductos, btnVentas, btnConfiguracion, btnIdioma);
 
         btnProductos.setOnClickListener(v -> abrirPantallaProductos());
         btnVentas.setOnClickListener(v -> abrirPantallaVentas());
-        btnTema.setOnClickListener(v -> {
-            ThemeManager.toggleTheme(this);
-            recreate();
-        });
+        btnConfiguracion.setOnClickListener(v -> abrirPantallaConfiguracion());
         btnIdioma.setOnClickListener(v -> {
             GestorTraducciones.alternarIdioma(this);
-            aplicarTextosTraducidos(btnProductos, btnVentas, btnTema, btnIdioma);
+            aplicarTextosTraducidos(btnProductos, btnVentas, btnConfiguracion, btnIdioma);
         });
+
+        aplicarConfiguracionVisual(btnProductos, btnVentas, btnConfiguracion, btnIdioma);
 
         iniciarAnimacionTitulo();
         iniciarAnimacionLoader();
@@ -64,22 +70,77 @@ public class PantallaInicial extends AppCompatActivity {
         startActivity(new Intent(this, PantallaVentas.class));
     }
 
-    private void aplicarTextosTraducidos(Button btnProductos, Button btnVentas, Button btnTema, Button btnIdioma) {
+    private void abrirPantallaConfiguracion() {
+        startActivity(new Intent(this, PantallaConfiguracion.class));
+    }
+
+    private void aplicarTextosTraducidos(Button btnProductos, Button btnVentas, Button btnConfiguracion, Button btnIdioma) {
         btnProductos.setText(GestorTraducciones.obtenerTexto(this, "btn_productos", "Productos"));
         btnVentas.setText(GestorTraducciones.obtenerTexto(this, "btn_ventas", "Ventas"));
-        if (ThemeManager.isNight(this)) {
-            btnTema.setText(GestorTraducciones.obtenerTexto(this, "btn_tema_claro", "Modo claro"));
-        } else {
-            btnTema.setText(GestorTraducciones.obtenerTexto(this, "btn_tema_oscuro", "Modo oscuro"));
-        }
+        btnConfiguracion.setText(GestorTraducciones.obtenerTexto(this, "btn_configuracion", "Configuracion"));
         btnIdioma.setText(GestorTraducciones.obtenerTexto(this, "btn_idioma", "Cambiar idioma"));
     }
 
     private void iniciarAnimacionTitulo() {
         LinearLayout rowTop = findViewById(R.id.titleRowTop);
         LinearLayout rowBottom = findViewById(R.id.titleRowBottom);
-        crearTituloAnimado(rowTop, "ABARROTES", 0);
-        crearTituloAnimado(rowBottom, "EL BARATON", 3);
+        String nombreTienda = AppConfigManager.obtenerNombreTienda(this).toUpperCase(Locale.getDefault());
+        String[] lineas = separarNombreTienda(nombreTienda);
+
+        crearTituloAnimado(rowTop, lineas[0], 0);
+        if (lineas[1].isEmpty()) {
+            rowBottom.removeAllViews();
+        } else {
+            crearTituloAnimado(rowBottom, lineas[1], 3);
+        }
+    }
+
+    private void aplicarConfiguracionVisual(Button btnProductos, Button btnVentas, Button btnConfiguracion, Button btnIdioma) {
+        AppConfigManager.Configuracion config = AppConfigManager.obtenerConfiguracion(this);
+
+        AppConfigManager.aplicarColorEnfasis(
+                this,
+                config.apariencia.colorEnfasis,
+                btnProductos,
+                btnVentas,
+                btnConfiguracion,
+                btnIdioma
+        );
+
+        AppConfigManager.aplicarEscalaTexto(findViewById(R.id.main), config.apariencia.tamanoTexto);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        aplicarTextosTraducidos(btnProductos, btnVentas, btnConfiguracion, btnIdioma);
+        aplicarConfiguracionVisual(btnProductos, btnVentas, btnConfiguracion, btnIdioma);
+        iniciarAnimacionTitulo();
+    }
+
+    private String[] separarNombreTienda(String nombreTienda) {
+        String limpio = nombreTienda == null ? "" : nombreTienda.trim();
+        if (limpio.isEmpty()) {
+            return new String[]{"PUNTO", "DE VENTA"};
+        }
+
+        if (!limpio.contains(" ")) {
+            return new String[]{limpio, ""};
+        }
+
+        int mitad = limpio.length() / 2;
+        int corte = limpio.indexOf(' ', mitad);
+        if (corte < 0) {
+            corte = limpio.lastIndexOf(' ', mitad);
+        }
+
+        if (corte <= 0 || corte >= limpio.length() - 1) {
+            return new String[]{limpio, ""};
+        }
+
+        String linea1 = limpio.substring(0, corte).trim();
+        String linea2 = limpio.substring(corte + 1).trim();
+        return new String[]{linea1, linea2};
     }
 
     private void crearTituloAnimado(LinearLayout contenedor, String texto, int delayOffset) {

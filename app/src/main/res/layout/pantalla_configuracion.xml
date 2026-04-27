@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainConfiguracion"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_inicio"
+    android:paddingStart="24dp"
+    android:paddingTop="20dp"
+    android:paddingEnd="24dp"
+    android:paddingBottom="20dp"
+    tools:context=".PantallaConfiguracion">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/bg_card_inicio"
+        android:padding="20dp">
+
+        <TextView
+            android:id="@+id/tvTituloConfiguracion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Configuracion"
+            android:textColor="@color/text_primary"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/lblNombreTienda"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:text="Nombre de tienda:"
+            android:textColor="@color/text_primary"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/etNombreTienda"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/input_tint"
+            android:hint="Escribe el nombre de tu tienda"
+            android:textColor="@color/text_primary"
+            android:textColorHint="@color/text_hint" />
+
+        <TextView
+            android:id="@+id/lblColorEnfasis"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Color de enfasis (#RRGGBB):"
+            android:textColor="@color/text_primary"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/etColorEnfasis"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/input_tint"
+            android:hint="Ejemplo: #4CAF50"
+            android:textColor="@color/text_primary"
+            android:textColorHint="@color/text_hint" />
+
+        <TextView
+            android:id="@+id/lblTamanoTexto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Tamano de texto:"
+            android:textColor="@color/text_primary"
+            android:textSize="18sp" />
+
+        <Spinner
+            android:id="@+id/spinnerTamanoTexto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp" />
+
+        <Button
+            android:id="@+id/btnModoOscuro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/bg_button_new"
+            android:text="Modo oscuro"
+            android:textAllCaps="false"
+            android:textColor="@color/button_text" />
+
+        <Button
+            android:id="@+id/btnGuardarConfiguracion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/bg_button_new"
+            android:text="Guardar configuracion"
+            android:textAllCaps="false"
+            android:textColor="@color/button_text" />
+
+        <Button
+            android:id="@+id/btnVolverConfiguracion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/bg_button_new"
+            android:text="Volver"
+            android:textAllCaps="false"
+            android:textColor="@color/button_text" />
+
+    </LinearLayout>
+</ScrollView>
