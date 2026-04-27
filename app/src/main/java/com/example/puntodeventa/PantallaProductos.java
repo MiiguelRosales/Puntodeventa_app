@@ -109,6 +109,7 @@ public class PantallaProductos extends AppCompatActivity {
         TextView txtdescripcion = findViewById(R.id.txtdescripcion);
         TextView txtexistencia = findViewById(R.id.txtexistencia);
         TextView txtprecio = findViewById(R.id.txtprecio);
+        TextView txtmensaje = findViewById(R.id.txtmensaje);
 
         prodTitulo.setText(GestorTraducciones.obtenerTexto(this, "lbl_titulo_productos", "Registro de Productos"));
         txtcodigo.setText(GestorTraducciones.obtenerTexto(this, "lbl_codigo", "Código:"));
@@ -128,6 +129,7 @@ public class PantallaProductos extends AppCompatActivity {
         btnEliminar.setText(GestorTraducciones.obtenerTexto(this, "btn_eliminar", "Eliminar"));
         btnModificar.setText(GestorTraducciones.obtenerTexto(this, "btn_modificar", "Modificar"));
         btnLimpiar.setText(GestorTraducciones.obtenerTexto(this, "btn_limpiar", "Limpiar"));
+        txtmensaje.setText(GestorTraducciones.obtenerTexto(this, "msg_productos_ayuda", "Aqui puedes guardar, consultar, modificar y eliminar productos"));
     }
 
     private void actualizarMonedaActual() {

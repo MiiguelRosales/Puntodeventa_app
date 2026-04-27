@@ -66,7 +66,8 @@
     "msg_no_existe": "No existe el producto",
     "msg_introducir_codigo": "Introduce el código del producto",
     "msg_venta_finalizada": "Venta finalizada",
-    "msg_cantidad_no_valida": "Cantidad no válida"
+    "msg_cantidad_no_valida": "Cantidad no válida",
+    "msg_productos_ayuda": "Aqui puedes guardar, consultar, modificar y eliminar productos"
   },
   "en": {
     "lbl_titulo_main": "Point of Sale",
@@ -135,6 +136,7 @@
     "msg_no_existe": "Product does not exist",
     "msg_introducir_codigo": "Enter product code",
     "msg_venta_finalizada": "Sale finished",
-    "msg_cantidad_no_valida": "Invalid quantity"
+    "msg_cantidad_no_valida": "Invalid quantity",
+    "msg_productos_ayuda": "Here you can save, search, edit, and delete products"
   }
 }
