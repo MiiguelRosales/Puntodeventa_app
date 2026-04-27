@@ -25,6 +25,7 @@ public class PantallaHistorial extends AppCompatActivity {
     private TextView lblFolioHistorial;
     private Spinner spinnerFolios;
     private Button btnExportarPdfHistorial;
+    private Button btnExportarExcelHistorial;
     private final List<HistorialComprasManager.Compra> comprasOrdenadas = new ArrayList<>();
     private HistorialComprasManager.Compra compraSeleccionada;
 
@@ -56,18 +57,27 @@ public class PantallaHistorial extends AppCompatActivity {
         spinnerFolios = findViewById(R.id.spinnerFolios);
         tvHistorialContenido = findViewById(R.id.tvHistorialContenido);
         btnExportarPdfHistorial = findViewById(R.id.btnExportarPdfHistorial);
+        btnExportarExcelHistorial = findViewById(R.id.btnExportarExcelHistorial);
         Button btnVolver = findViewById(R.id.btnVolverHistorial);
 
         tvTitulo.setText(GestorTraducciones.obtenerTexto(this, "lbl_titulo_historial", "Historial de compras"));
         lblFolioHistorial.setText(GestorTraducciones.obtenerTexto(this, "lbl_folio", "Folio:"));
         btnExportarPdfHistorial.setText(GestorTraducciones.obtenerTexto(this, "btn_exportar_pdf", "Exportar PDF"));
+        btnExportarExcelHistorial.setText(GestorTraducciones.obtenerTexto(this, "btn_exportar_excel", "Exportar Excel"));
         btnVolver.setText(GestorTraducciones.obtenerTexto(this, "btn_volver", "Volver"));
 
         AppConfigManager.Configuracion config = AppConfigManager.obtenerConfiguracion(this);
-        AppConfigManager.aplicarColorEnfasis(this, config.apariencia.colorEnfasis, btnExportarPdfHistorial, btnVolver);
+        AppConfigManager.aplicarColorEnfasis(
+            this,
+            config.apariencia.colorEnfasis,
+            btnExportarPdfHistorial,
+            btnExportarExcelHistorial,
+            btnVolver
+        );
         AppConfigManager.aplicarEscalaTexto(findViewById(R.id.mainHistorial), config.apariencia.tamanoTexto);
 
         btnExportarPdfHistorial.setOnClickListener(v -> exportarCompraSeleccionada());
+        btnExportarExcelHistorial.setOnClickListener(v -> exportarExcelCompraSeleccionada());
         btnVolver.setOnClickListener(v -> finish());
 
         cargarHistorial();
@@ -89,6 +99,7 @@ public class PantallaHistorial extends AppCompatActivity {
             spinnerFolios.setVisibility(View.GONE);
             lblFolioHistorial.setVisibility(View.GONE);
             btnExportarPdfHistorial.setVisibility(View.GONE);
+            btnExportarExcelHistorial.setVisibility(View.GONE);
             tvHistorialContenido.setText(GestorTraducciones.obtenerTexto(this, "msg_historial_vacio", "No hay historial"));
             return;
         }
@@ -113,6 +124,7 @@ public class PantallaHistorial extends AppCompatActivity {
         spinnerFolios.setVisibility(View.VISIBLE);
         lblFolioHistorial.setVisibility(View.VISIBLE);
         btnExportarPdfHistorial.setVisibility(View.VISIBLE);
+        btnExportarExcelHistorial.setVisibility(View.VISIBLE);
 
         spinnerFolios.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -213,6 +225,21 @@ public class PantallaHistorial extends AppCompatActivity {
         }
 
         mostrarMensaje("PDF generado en: " + rutaArchivo);
+    }
+
+    private void exportarExcelCompraSeleccionada() {
+        if (compraSeleccionada == null) {
+            mostrarMensaje(GestorTraducciones.obtenerTexto(this, "msg_historial_vacio", "No hay historial"));
+            return;
+        }
+
+        String rutaArchivo = GeneradorExportacionExcel.exportarCompraDesdeJsonACsv(this, compraSeleccionada);
+        if (rutaArchivo == null) {
+            mostrarMensaje("No se pudo generar la exportacion");
+            return;
+        }
+
+        mostrarMensaje("Exportacion generada en: " + rutaArchivo);
     }
 
     private String formatear(double valor) {

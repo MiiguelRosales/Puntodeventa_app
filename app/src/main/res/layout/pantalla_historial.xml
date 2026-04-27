@@ -65,6 +65,16 @@
         android:textColor="@color/button_text" />
 
     <Button
+        android:id="@+id/btnExportarExcelHistorial"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/bg_button_new"
+        android:text="Exportar Excel"
+        android:textAllCaps="false"
+        android:textColor="@color/button_text" />
+
+    <Button
         android:id="@+id/btnVolverHistorial"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

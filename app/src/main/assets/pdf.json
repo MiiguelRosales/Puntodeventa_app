@@ -1,0 +1,10 @@
+{
+  "venta": {
+    "ventaId": "",
+    "fecha": "",
+    "cliente": "",
+    "productos": [],
+    "subtotal": 0,
+    "total": 0
+  }
+}
