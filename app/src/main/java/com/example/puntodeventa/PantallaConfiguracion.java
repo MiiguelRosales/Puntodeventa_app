@@ -25,6 +25,8 @@ public class PantallaConfiguracion extends AppCompatActivity {
     private Spinner spinnerTamanoTexto;
     private Button btnModoOscuro;
     private Button btnGuardarConfiguracion;
+    private TextView tvMonedaActualConfiguracion;
+    private Button btnCambiarMonedaConfiguracion;
 
     private final List<String> valoresTamano = new ArrayList<>();
 
@@ -56,12 +58,15 @@ public class PantallaConfiguracion extends AppCompatActivity {
         spinnerTamanoTexto = findViewById(R.id.spinnerTamanoTexto);
         btnModoOscuro = findViewById(R.id.btnModoOscuro);
         btnGuardarConfiguracion = findViewById(R.id.btnGuardarConfiguracion);
+        tvMonedaActualConfiguracion = findViewById(R.id.tvMonedaActualConfiguracion);
+        btnCambiarMonedaConfiguracion = findViewById(R.id.btnCambiarMonedaConfiguracion);
         Button btnVolver = findViewById(R.id.btnVolverConfiguracion);
 
         configurarSpinnerTamanoTexto();
         aplicarTextosTraducidos(btnVolver);
         cargarValoresActuales();
         aplicarEstilosVisuales(btnVolver);
+        actualizarMonedaActual();
 
         btnModoOscuro.setOnClickListener(v -> {
             ThemeManager.toggleTheme(this);
@@ -70,6 +75,7 @@ public class PantallaConfiguracion extends AppCompatActivity {
         });
 
         btnGuardarConfiguracion.setOnClickListener(v -> guardarConfiguracion());
+        btnCambiarMonedaConfiguracion.setOnClickListener(v -> cambiarMoneda());
         btnVolver.setOnClickListener(v -> finish());
     }
 
@@ -108,6 +114,7 @@ public class PantallaConfiguracion extends AppCompatActivity {
         etColorEnfasis.setHint(GestorTraducciones.obtenerTexto(this, "hint_color_enfasis", "Ejemplo: #4CAF50"));
 
         btnGuardarConfiguracion.setText(GestorTraducciones.obtenerTexto(this, "btn_guardar_configuracion", "Guardar configuracion"));
+        btnCambiarMonedaConfiguracion.setText(GestorTraducciones.obtenerTexto(this, "btn_cambiar_moneda", "Cambiar moneda"));
         btnVolver.setText(GestorTraducciones.obtenerTexto(this, "btn_volver", "Volver"));
         actualizarTextoBotonTema();
     }
@@ -130,6 +137,7 @@ public class PantallaConfiguracion extends AppCompatActivity {
                 config.apariencia.colorEnfasis,
                 btnModoOscuro,
                 btnGuardarConfiguracion,
+                btnCambiarMonedaConfiguracion,
                 btnVolver
         );
 
@@ -157,6 +165,25 @@ public class PantallaConfiguracion extends AppCompatActivity {
         } else {
             btnModoOscuro.setText(GestorTraducciones.obtenerTexto(this, "btn_tema_oscuro", "Modo oscuro"));
         }
+    }
+
+    private void cambiarMoneda() {
+        CambioMonedaManager.ResultadoConversion resultado = CambioMonedaManager.convertirPrecios(this);
+        if (!resultado.exito) {
+            mostrarMensaje(resultado.mensajeError);
+            return;
+        }
+
+        actualizarMonedaActual();
+        String mensaje = "Moneda convertida de " + resultado.origen + " a " + resultado.destino
+                + " (tasa " + resultado.tasa + "). Productos actualizados: " + resultado.filasActualizadas;
+        mostrarMensaje(mensaje);
+    }
+
+    private void actualizarMonedaActual() {
+        String etiqueta = GestorTraducciones.obtenerTexto(this, "lbl_moneda_actual", "Moneda actual:");
+        String moneda = CambioMonedaManager.obtenerMonedaActual(this);
+        tvMonedaActualConfiguracion.setText(etiqueta + " " + moneda);
     }
 
     private void mostrarMensaje(String mensaje) {

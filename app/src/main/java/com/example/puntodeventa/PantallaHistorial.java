@@ -23,6 +23,7 @@ public class PantallaHistorial extends AppCompatActivity {
 
     private TextView tvHistorialContenido;
     private TextView lblFolioHistorial;
+    private TextView tvMonedaActualHistorial;
     private Spinner spinnerFolios;
     private Button btnExportarPdfHistorial;
     private Button btnExportarExcelHistorial;
@@ -54,6 +55,7 @@ public class PantallaHistorial extends AppCompatActivity {
 
         TextView tvTitulo = findViewById(R.id.tvTituloHistorial);
         lblFolioHistorial = findViewById(R.id.lblFolioHistorial);
+        tvMonedaActualHistorial = findViewById(R.id.tvMonedaActualHistorial);
         spinnerFolios = findViewById(R.id.spinnerFolios);
         tvHistorialContenido = findViewById(R.id.tvHistorialContenido);
         btnExportarPdfHistorial = findViewById(R.id.btnExportarPdfHistorial);
@@ -80,12 +82,14 @@ public class PantallaHistorial extends AppCompatActivity {
         btnExportarExcelHistorial.setOnClickListener(v -> exportarExcelCompraSeleccionada());
         btnVolver.setOnClickListener(v -> finish());
 
+        actualizarMonedaCompra(null);
         cargarHistorial();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        actualizarMonedaCompra(compraSeleccionada);
         cargarHistorial();
     }
 
@@ -145,11 +149,13 @@ public class PantallaHistorial extends AppCompatActivity {
     private void mostrarDetalleCompra(HistorialComprasManager.Compra compra) {
         if (compra == null) {
             compraSeleccionada = null;
+            actualizarMonedaCompra(null);
             tvHistorialContenido.setText("");
             return;
         }
 
         compraSeleccionada = compra;
+        actualizarMonedaCompra(compra);
 
         StringBuilder sb = new StringBuilder();
         sb.append(GestorTraducciones.obtenerTexto(this, "lbl_folio", "Folio:"))
@@ -176,19 +182,19 @@ public class PantallaHistorial extends AppCompatActivity {
                         .append(producto.cantidad)
                         .append("\n");
                 sb.append(GestorTraducciones.obtenerTexto(this, "lbl_precio", "Precio:"))
-                        .append(" $")
-                        .append(formatear(producto.precioUnitario))
+                        .append(" ")
+                        .append(formatearMoneda(producto.precioUnitario, compra.moneda))
                         .append("\n");
                 sb.append(GestorTraducciones.obtenerTexto(this, "lbl_subtotal", "Subtotal:"))
-                        .append(" $")
-                        .append(formatear(producto.subtotal))
+                        .append(" ")
+                        .append(formatearMoneda(producto.subtotal, compra.moneda))
                         .append("\n\n");
             }
         }
 
         sb.append(GestorTraducciones.obtenerTexto(this, "lbl_total", "Total:"))
-                .append(" $")
-                .append(formatear(compra.total));
+                .append(" ")
+                .append(formatearMoneda(compra.total, compra.moneda));
 
         tvHistorialContenido.setText(sb.toString().trim());
     }
@@ -209,14 +215,15 @@ public class PantallaHistorial extends AppCompatActivity {
             filas.add(new GeneradorReportes.FilaReporte(
                     producto.nombre,
                     producto.cantidad,
-                    "$" + formatear(producto.subtotal)
+                    formatearMoneda(producto.subtotal, compraSeleccionada.moneda)
             ));
         }
 
         String rutaArchivo = GeneradorReportes.generarReporteVentas(
                 this,
                 filas,
-                "$" + formatear(compraSeleccionada.total)
+                formatearMoneda(compraSeleccionada.total, compraSeleccionada.moneda),
+                monedaCompraSegura(compraSeleccionada)
         );
 
         if (rutaArchivo == null) {
@@ -244,6 +251,23 @@ public class PantallaHistorial extends AppCompatActivity {
 
     private String formatear(double valor) {
         return String.format(Locale.getDefault(), "%.2f", valor);
+    }
+
+    private void actualizarMonedaCompra(HistorialComprasManager.Compra compra) {
+        String etiqueta = GestorTraducciones.obtenerTexto(this, "lbl_moneda_compra", "Moneda de la compra:");
+        tvMonedaActualHistorial.setText(etiqueta + " " + monedaCompraSegura(compra));
+    }
+
+    private String monedaCompraSegura(HistorialComprasManager.Compra compra) {
+        if (compra == null || compra.moneda == null || compra.moneda.trim().isEmpty()) {
+            return "MXN";
+        }
+        return compra.moneda.trim().toUpperCase(Locale.ROOT);
+    }
+
+    private String formatearMoneda(double valor, String moneda) {
+        String m = (moneda == null || moneda.trim().isEmpty()) ? "MXN" : moneda.trim().toUpperCase(Locale.ROOT);
+        return m + " " + formatear(valor);
     }
 
     private void mostrarMensaje(String mensaje) {

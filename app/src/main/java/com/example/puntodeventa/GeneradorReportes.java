@@ -33,7 +33,7 @@ public class GeneradorReportes {
         }
     }
 
-    public static String generarReporteVentas(Context context, List<FilaReporte> filas, String total) {
+    public static String generarReporteVentas(Context context, List<FilaReporte> filas, String total, String moneda) {
         if (filas == null || filas.isEmpty()) {
             return null;
         }
@@ -65,6 +65,8 @@ public class GeneradorReportes {
         String fecha = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault()).format(new Date());
         canvas.drawText("Fecha: " + fecha, startX, y, textoPaint);
         y += 26;
+        canvas.drawText("Moneda: " + valorSeguro(moneda), startX, y, textoPaint);
+        y += 24;
 
         int colNombre = startX;
         int colCantidad = 320;

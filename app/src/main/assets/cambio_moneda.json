@@ -1,0 +1,16 @@
+{
+  "accion": "convertir_moneda",
+  "monedas_soportadas": ["MXN", "USD"],
+  "tipos_de_cambio": [
+    {
+      "origen": "MXN",
+      "destino": "USD",
+      "tasa": 0.0571
+    },
+    {
+      "origen": "USD",
+      "destino": "MXN",
+      "tasa": 17.50
+    }
+  ]
+}

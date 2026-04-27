@@ -262,7 +262,20 @@
                 android:textColor="@color/button_text"
                 android:text="@string/productos_btn_limpiar" />
             </LinearLayout>
+
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvMonedaActualProductos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/contenedorBotones"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="14dp"
+        android:text="Moneda actual: MXN"
+        android:textColor="@color/text_primary"
+        android:textSize="16sp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/txtmensaje"

@@ -31,7 +31,7 @@ public final class GeneradorExportacionExcel {
             return null;
         }
 
-        ExportacionExcel exportacion = construirExportacion(compra);
+        ExportacionExcel exportacion = construirExportacion(context, compra);
 
         try {
             guardarJsonTemporalInterno(context, exportacion);
@@ -50,9 +50,14 @@ public final class GeneradorExportacionExcel {
         }
     }
 
-    private static ExportacionExcel construirExportacion(HistorialComprasManager.Compra compra) {
+    private static ExportacionExcel construirExportacion(Context context, HistorialComprasManager.Compra compra) {
         ExportacionExcel exportacion = new ExportacionExcel();
         exportacion.fecha = compra.fecha;
+        if (compra != null && compra.moneda != null && !compra.moneda.trim().isEmpty()) {
+            exportacion.moneda = compra.moneda.trim();
+        } else {
+            exportacion.moneda = CambioMonedaManager.obtenerMonedaActual(context);
+        }
         exportacion.totalVenta = redondear(compra.total);
 
         for (HistorialComprasManager.ProductoCompra producto : compra.productos) {
@@ -97,11 +102,13 @@ public final class GeneradorExportacionExcel {
 
     private static String convertirACsv(ExportacionExcel exportacion) {
         StringBuilder sb = new StringBuilder();
-        sb.append("fecha,codigo,nombre,precio,cantidad,subtotal\n");
+        sb.append("fecha,moneda,codigo,nombre,precio,cantidad,subtotal\n");
 
         String fecha = escaparCsv(exportacion.fecha);
+        String moneda = escaparCsv(exportacion.moneda);
         for (ExportacionExcel.ProductoExcel producto : exportacion.productos) {
             sb.append(fecha).append(",")
+                    .append(moneda).append(",")
                     .append(escaparCsv(producto.codigo)).append(",")
                     .append(escaparCsv(producto.nombre)).append(",")
                     .append(formatearNumero(producto.precio)).append(",")
@@ -110,7 +117,7 @@ public final class GeneradorExportacionExcel {
         }
 
         sb.append("\n");
-        sb.append("total_venta,,,,,").append(formatearNumero(exportacion.totalVenta)).append("\n");
+        sb.append("total_venta,").append(moneda).append(",,,,,").append(formatearNumero(exportacion.totalVenta)).append("\n");
         return sb.toString();
     }
 
@@ -173,6 +180,9 @@ public final class GeneradorExportacionExcel {
     private static final class ExportacionExcel {
         @SerializedName("fecha")
         String fecha;
+
+        @SerializedName("moneda")
+        String moneda;
 
         @SerializedName("productos")
         List<ProductoExcel> productos = new ArrayList<>();

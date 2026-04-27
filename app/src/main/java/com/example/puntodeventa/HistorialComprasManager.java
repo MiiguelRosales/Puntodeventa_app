@@ -36,6 +36,7 @@ public final class HistorialComprasManager {
             Compra compra = new Compra();
             compra.folio = generarSiguienteFolio(historial.compras);
             compra.fecha = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
+            compra.moneda = CambioMonedaManager.obtenerMonedaActual(context);
             compra.total = redondear(total);
             compra.productos = new ArrayList<>(productos);
 
@@ -75,6 +76,11 @@ public final class HistorialComprasManager {
             }
             if (historial.compras == null) {
                 historial.compras = new ArrayList<>();
+            }
+            for (Compra compra : historial.compras) {
+                if (compra != null && (compra.moneda == null || compra.moneda.trim().isEmpty())) {
+                    compra.moneda = "MXN";
+                }
             }
             return historial;
         } catch (Exception e) {
@@ -128,6 +134,9 @@ public final class HistorialComprasManager {
 
         @SerializedName("fecha")
         public String fecha;
+
+        @SerializedName("moneda")
+        public String moneda;
 
         @SerializedName("total")
         public double total;

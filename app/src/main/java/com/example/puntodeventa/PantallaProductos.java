@@ -28,6 +28,7 @@ public class PantallaProductos extends AppCompatActivity {
     private EditText inputDescripcion;
     private EditText inputExistencia;
     private EditText inputPrecio;
+    private TextView tvMonedaActualProductos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +57,7 @@ public class PantallaProductos extends AppCompatActivity {
         inputDescripcion = findViewById(R.id.inputdescripcion);
         inputExistencia = findViewById(R.id.inputexistencia);
         inputPrecio = findViewById(R.id.inputprecio);
+        tvMonedaActualProductos = findViewById(R.id.tvMonedaActualProductos);
 
         Button btnGuardar = findViewById(R.id.btnGuardar);
         Button btnConsultar = findViewById(R.id.btnConsultar);
@@ -72,6 +74,13 @@ public class PantallaProductos extends AppCompatActivity {
         btnLimpiar.setOnClickListener(this::limpiarFormulario);
 
         aplicarConfiguracionVisual(btnGuardar, btnConsultar, btnEliminar, btnModificar, btnLimpiar);
+        actualizarMonedaActual();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        actualizarMonedaActual();
     }
 
     private void aplicarConfiguracionVisual(Button btnGuardar, Button btnConsultar, Button btnEliminar,
@@ -118,6 +127,15 @@ public class PantallaProductos extends AppCompatActivity {
         btnEliminar.setText(GestorTraducciones.obtenerTexto(this, "btn_eliminar", "Eliminar"));
         btnModificar.setText(GestorTraducciones.obtenerTexto(this, "btn_modificar", "Modificar"));
         btnLimpiar.setText(GestorTraducciones.obtenerTexto(this, "btn_limpiar", "Limpiar"));
+    }
+
+    private void actualizarMonedaActual() {
+        if (tvMonedaActualProductos == null) {
+            return;
+        }
+        String etiqueta = GestorTraducciones.obtenerTexto(this, "lbl_moneda_actual", "Moneda actual:");
+        String moneda = CambioMonedaManager.obtenerMonedaActual(this);
+        tvMonedaActualProductos.setText(etiqueta + " " + moneda);
     }
 
     public void limpiarFormulario(View v) {

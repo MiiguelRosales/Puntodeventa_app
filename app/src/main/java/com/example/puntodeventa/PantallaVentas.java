@@ -40,6 +40,7 @@ public class PantallaVentas extends AppCompatActivity {
     private TextView tvPrecio;
     private TextView tvSubtotal;
     private TextView tvTotal;
+    private TextView tvMonedaActualVentas;
     private TableLayout tblProductosAgregados;
 
     private final List<ItemVenta> itemsVenta = new ArrayList<>();
@@ -74,6 +75,7 @@ public class PantallaVentas extends AppCompatActivity {
         tvPrecio = findViewById(R.id.tvPrecio);
         tvSubtotal = findViewById(R.id.tvSubtotal);
         tvTotal = findViewById(R.id.tvTotal);
+        tvMonedaActualVentas = findViewById(R.id.tvMonedaActualVentas);
         tblProductosAgregados = findViewById(R.id.tblProductosAgregados);
 
         Button btnBuscarCalcular = findViewById(R.id.btnBuscarCalcular);
@@ -111,6 +113,14 @@ public class PantallaVentas extends AppCompatActivity {
 
         tvSubtotal.setText("0.00");
         tvTotal.setText("0.00");
+        actualizarMonedaActual();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        actualizarMonedaActual();
+        actualizarTotal();
     }
 
     private void aplicarConfiguracionVisual(Button btnBuscarCalcular, Button btnAgregar,
@@ -370,7 +380,12 @@ public class PantallaVentas extends AppCompatActivity {
             total += item.subtotal;
         }
 
-        String rutaArchivo = GeneradorReportes.generarReporteVentas(this, filas, formatearMoneda(total));
+        String rutaArchivo = GeneradorReportes.generarReporteVentas(
+                this,
+                filas,
+                formatearMoneda(total),
+                obtenerMonedaActual()
+        );
         if (rutaArchivo == null) {
             mostrarMensaje("No se pudo generar el PDF");
             return;
@@ -571,8 +586,17 @@ public class PantallaVentas extends AppCompatActivity {
         etCodigo.requestFocus();
     }
 
+    private void actualizarMonedaActual() {
+        String etiqueta = GestorTraducciones.obtenerTexto(this, "lbl_moneda_actual", "Moneda actual:");
+        tvMonedaActualVentas.setText(etiqueta + " " + obtenerMonedaActual());
+    }
+
+    private String obtenerMonedaActual() {
+        return CambioMonedaManager.obtenerMonedaActual(this);
+    }
+
     private String formatearMoneda(double valor) {
-        return String.format(Locale.getDefault(), "%.2f", valor);
+        return obtenerMonedaActual() + " " + String.format(Locale.getDefault(), "%.2f", valor);
     }
 
     private void mostrarMensaje(String mensaje) {

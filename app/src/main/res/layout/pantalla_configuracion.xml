@@ -99,6 +99,27 @@
             android:textAllCaps="false"
             android:textColor="@color/button_text" />
 
+        <TextView
+            android:id="@+id/tvMonedaActualConfiguracion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:layout_gravity="center_horizontal"
+            android:text="Moneda actual: MXN"
+            android:textColor="@color/text_primary"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btnCambiarMonedaConfiguracion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bg_button_new"
+            android:text="Cambiar moneda"
+            android:textAllCaps="false"
+            android:textColor="@color/button_text" />
+
         <Button
             android:id="@+id/btnVolverConfiguracion"
             android:layout_width="match_parent"
