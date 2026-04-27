@@ -1,6 +1,7 @@
 package com.example.puntodeventa;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
@@ -80,16 +81,18 @@ public class PantallaVentas extends AppCompatActivity {
         Button btnTerminarVenta = findViewById(R.id.btnTerminarVenta);
         Button btnNuevaVenta = findViewById(R.id.btnNuevaVenta);
         Button btnExportarPdf = findViewById(R.id.btnExportarPdf);
+        Button btnHistorial = findViewById(R.id.btnHistorialVentas);
 
-        aplicarTextosTraducidos(btnBuscarCalcular, btnAgregar, btnTerminarVenta, btnNuevaVenta, btnExportarPdf);
+        aplicarTextosTraducidos(btnBuscarCalcular, btnAgregar, btnTerminarVenta, btnNuevaVenta, btnExportarPdf, btnHistorial);
 
         btnBuscarCalcular.setOnClickListener(this::buscarYCalcular);
         btnAgregar.setOnClickListener(this::agregarProducto);
         btnTerminarVenta.setOnClickListener(this::terminarVenta);
         btnNuevaVenta.setOnClickListener(this::nuevaVenta);
         btnExportarPdf.setOnClickListener(this::exportarPdf);
+        btnHistorial.setOnClickListener(v -> abrirPantallaHistorial());
 
-        aplicarConfiguracionVisual(btnBuscarCalcular, btnAgregar, btnTerminarVenta, btnNuevaVenta, btnExportarPdf);
+        aplicarConfiguracionVisual(btnBuscarCalcular, btnAgregar, btnTerminarVenta, btnNuevaVenta, btnExportarPdf, btnHistorial);
 
         etCantidad.addTextChangedListener(new TextWatcher() {
             @Override
@@ -112,7 +115,7 @@ public class PantallaVentas extends AppCompatActivity {
 
     private void aplicarConfiguracionVisual(Button btnBuscarCalcular, Button btnAgregar,
                                             Button btnTerminarVenta, Button btnNuevaVenta,
-                                            Button btnExportarPdf) {
+                            Button btnExportarPdf, Button btnHistorial) {
         AppConfigManager.Configuracion config = AppConfigManager.obtenerConfiguracion(this);
 
         AppConfigManager.aplicarColorEnfasis(
@@ -122,7 +125,8 @@ public class PantallaVentas extends AppCompatActivity {
                 btnAgregar,
                 btnTerminarVenta,
                 btnNuevaVenta,
-                btnExportarPdf
+                btnExportarPdf,
+                btnHistorial
         );
 
         AppConfigManager.aplicarEscalaTexto(findViewById(R.id.mainVentas), config.apariencia.tamanoTexto);
@@ -130,7 +134,7 @@ public class PantallaVentas extends AppCompatActivity {
 
     private void aplicarTextosTraducidos(Button btnBuscarCalcular, Button btnAgregar,
                                          Button btnTerminarVenta, Button btnNuevaVenta,
-                                         Button btnExportarPdf) {
+                                         Button btnExportarPdf, Button btnHistorial) {
         TextView tvTituloVentas = findViewById(R.id.tvTituloVentas);
         TextView lblCodigo = findViewById(R.id.lblCodigoVenta);
         TextView lblNombre = findViewById(R.id.lblNombreVenta);
@@ -163,6 +167,11 @@ public class PantallaVentas extends AppCompatActivity {
         btnTerminarVenta.setText(GestorTraducciones.obtenerTexto(this, "btn_finalizar", "Finalizar Venta"));
         btnNuevaVenta.setText(GestorTraducciones.obtenerTexto(this, "btn_cancelar_venta", "Cancelar venta"));
         btnExportarPdf.setText(GestorTraducciones.obtenerTexto(this, "btn_exportar_pdf", "Exportar PDF"));
+        btnHistorial.setText(GestorTraducciones.obtenerTexto(this, "btn_historial", "Historial"));
+    }
+
+    private void abrirPantallaHistorial() {
+        startActivity(new Intent(this, PantallaHistorial.class));
     }
 
     public void buscarYCalcular(View v) {
@@ -312,6 +321,16 @@ public class PantallaVentas extends AppCompatActivity {
             }
 
             bd.setTransactionSuccessful();
+
+            boolean historialGuardado = HistorialComprasManager.guardarCompra(
+                    this,
+                    construirProductosParaHistorial(),
+                    calcularTotalActual()
+            );
+            if (!historialGuardado) {
+                mostrarMensaje("Venta finalizada, pero no se pudo guardar historial");
+            }
+
             mostrarMensaje("Gracias por tu compra");
             limpiarVentaCompleta();
         } catch (SQLiteException e) {
@@ -503,11 +522,30 @@ public class PantallaVentas extends AppCompatActivity {
     }
 
     private void actualizarTotal() {
+        tvTotal.setText(formatearMoneda(calcularTotalActual()));
+    }
+
+    private double calcularTotalActual() {
         double total = 0;
         for (ItemVenta item : itemsVenta) {
             total += item.subtotal;
         }
-        tvTotal.setText(formatearMoneda(total));
+        return total;
+    }
+
+    private List<HistorialComprasManager.ProductoCompra> construirProductosParaHistorial() {
+        List<HistorialComprasManager.ProductoCompra> productos = new ArrayList<>();
+        for (ItemVenta item : itemsVenta) {
+            double precioUnitario = item.cantidad > 0 ? item.subtotal / item.cantidad : 0;
+            productos.add(new HistorialComprasManager.ProductoCompra(
+                    String.valueOf(item.codigo),
+                    item.nombre,
+                    item.cantidad,
+                    precioUnitario,
+                    item.subtotal
+            ));
+        }
+        return productos;
     }
 
     private void limpiarCamposProducto() {

@@ -13,6 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PuntoDeVenta">
         <activity
+            android:name=".PantallaHistorial"
+            android:exported="false" />
+        <activity
             android:name=".PantallaConfiguracion"
             android:exported="false" />
         <activity
